@@ -1,1 +1,5 @@
-streamlit>=1.40,<2
+flask
+flask-cors
+requests
+shoonya-api-py
+gunicorn
