@@ -250,11 +250,12 @@
         ============================================================ */
 
         const LIVE_API = {
-            enabled: false,
-            endpoint: "",       // Example: https://YOUR-SERVER/api/option-chain
-            apiKey: "",         // Prefer server-side storage
-            refreshMs: 5000
-        };
+    enabled: true,
+    endpoint: "http://127.0.0.1:5000/api/option-chain",
+    apiKey: "",         
+    refreshMs: 5000
+};
+        
 
         let LIVE_DATA = null;
         let LIVE_ERROR = "";
