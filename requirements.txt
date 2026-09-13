@@ -1,6 +1,4 @@
 flask
 flask-cors
 requests
-git+https://github.com/Shoonya-Dev/ShoonyaApi-py.git
-
 gunicorn
