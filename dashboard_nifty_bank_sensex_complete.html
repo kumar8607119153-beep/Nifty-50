@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nifty 50 — Option Intelligence Engine with Zero-to-Hero Scanner</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-1 sm:p-4">
+    <div class="max-w-full mx-auto space-y-3">
+        
+        <!-- Top Dark Navigation Bar -->
+        <header class="bg-[#1b1b2f] border-b border-slate-800 rounded-t-xl px-4 py-3 flex items-center justify-between shadow-md">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-bold tracking-wider text-indigo-400 uppercase">Option Intelligence Engine</span>
+            </div>
+            <div class="text-right">
+                <p class="text-xs font-semibold text-white">Sanjay Rana</p>
+                <p class="text-[10px] text-slate-400 font-mono">Mob: 8930814389</p>
+            </div>
+        </header>
+
+        <!-- Sub Menu Bar -->
+        <nav class="bg-[#1b1b2f]/80 backdrop-blur px-3 py-2 flex items-center justify-between text-[11px] text-slate-300 border-x border-slate-800">
+            <div class="flex items-center gap-2">
+                <span class="text-indigo-400 font-bold">NIFTY 50 SCALPER</span>
+                <span class="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-800 text-[10px]">Supertrend & Zero-to-Hero Scanner</span>
+            </div>
+            <div class="text-[10px] text-amber-400 font-mono font-bold">
+                Ready for Live Setup
+            </div>
+        </nav>
+
+        <!-- Main Exchange Header Box -->
+        <div class="bg-white text-slate-900 rounded-b-xl p-3 sm:p-4 shadow-xl border border-slate-200 space-y-4">
+            
+            <!-- NSE Brand & Title Row -->
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="flex gap-0.5 items-center">
+                        <div class="w-3 h-4 bg-amber-500 rounded-sm"></div>
+                        <div class="w-3 h-6 bg-indigo-600 rounded-sm"></div>
+                        <div class="w-3 h-5 bg-emerald-500 rounded-sm"></div>
+                    </div>
+                    <span class="text-lg sm:text-xl font-black tracking-tight text-slate-900">NSE NIFTY 50</span>
+                </div>
+                
+                <!-- Expiry Date Selector Dropdown -->
+                <div class="flex items-center gap-2">
+                    <div class="text-right">
+                        <label for="expiry-select" class="block text-[9px] font-bold text-slate-500 uppercase">Select Expiry</label>
+                        <select id="expiry-select" onchange="refreshData()" class="bg-slate-100 border border-slate-300 text-slate-900 text-xs font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                            <option value="17-Sep-2026">17 Sep 2026 (Weekly)</option>
+                            <option value="24-Sep-2026">24 Sep 2026 (Weekly)</option>
+                            <option value="29-Sep-2026">29 Sep 2026 (Monthly)</option>
+                            <option value="08-Oct-2026">08 Oct 2026 (Weekly)</option>
+                        </select>
+                    </div>
+                    <button onclick="refreshData()" class="px-2.5 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800 transition shadow mt-3">
+                        🔄
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Spot & Index Supertrend Box -->
+            <div class="space-y-2">
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50">
+                    <span class="text-[10px] text-slate-400 font-bold uppercase">Nifty Spot Price</span>
+                    <div id="spot-price" class="text-lg sm:text-xl font-extrabold font-mono text-slate-900 mt-0.5">23,435.30</div>
+                    <div class="text-xs font-semibold text-rose-600 mt-0.5">▼ -79.70 (-0.34%)</div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-slate-500 font-bold uppercase">Index Supertrend (1m & 5m Overview)</span>
+                        <span class="text-[9px] font-mono font-bold text-indigo-600">Active Setup</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1">
+                                <span>1M ENTRY</span>
+                                <span>1M TSL</span>
+                            </div>
+                            <div class="flex justify-between items-center font-mono">
+                                <span class="text-xs font-bold text-slate-800">23,337.9</span>
+                                <div class="text-right">
+                                    <span class="text-xs font-bold text-emerald-600">23,368.2</span>
+                                    <span class="text-[10px] text-emerald-600 font-bold">▲</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1">
+                                <span>5M ENTRY</span>
+                                <span>5M TSL</span>
+                            </div>
+                            <div class="flex justify-between items-center font-mono">
+                                <span class="text-xs font-bold text-slate-800">23,300.0</span>
+                                <div class="text-right">
+                                    <span class="text-xs font-bold text-emerald-600">23,256.7</span>
+                                    <span class="text-[10px] text-emerald-600 font-bold">▲</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================
+                 ADDED: NIFTY 50 + NIFTY BANK + SENSEX
+                 LIVE 1-SECOND BUYER/SELLER + CLOSED 1M/5M FLOW
+                 1M/5M SUPERTREND IS SHOWN ABOVE THE FLOW
+                 ------------------------------------------------------------
+                 NOTHING ELSE IN THE EXISTING DASHBOARD IS REMOVED.
+                 Exact buyer/seller percentages require buyVolume/sellVolume
+                 (or the percentage fields) from the live backend.
+               ============================================================ -->
+            <div class="border border-slate-300 rounded-xl p-3 bg-white space-y-2">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="text-[10px] text-slate-600 font-bold uppercase">
+                            NIFTY 50 • NIFTY BANK • SENSEX
+                        </span>
+                        <div class="text-[8px] text-slate-400 font-mono">
+                            1M / 5M Supertrend + Buyer/Seller Flow
+                        </div>
+                    </div>
+                    <span id="multi-index-flow-status"
+                          class="text-[9px] font-mono font-bold text-slate-500">
+                        ● WAITING FOR LIVE DATA
+                    </span>
+                </div>
+
+                <div id="multi-index-flow-grid"
+                     class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <!-- Cards are filled by the live logic below. -->
+                </div>
+            </div>
+
+
+            <!-- LIVE API STATUS / OPTION METRICS -->
+            <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold text-slate-600 uppercase">Live Market Data</span>
+                    <span id="live-status" class="text-[9px] font-mono">● API OFFLINE</span>
+                </div>
+                <div id="live-metrics" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono">
+                    <div><span class="text-slate-500">PCR</span><b>--</b></div>
+                    <div><span class="text-slate-500">Max Pain</span><b>--</b></div>
+                    <div><span class="text-slate-500">Call OI</span><b>--</b></div>
+                    <div><span class="text-slate-500">Put OI</span><b>--</b></div>
+                </div>
+            </div>
+
+            <!-- Indicator/analysis placeholders fed by live backend -->
+            <div class="border border-slate-200 rounded-xl p-3 bg-white">
+                <div class="text-[10px] font-bold text-slate-600 uppercase mb-2">
+                    Intelligence: IV • Greeks • PCR • Max Pain • Support/Resistance
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[9px] font-mono">
+                    <div class="bg-slate-50 rounded p-2">IV: <b id="iv-value">--</b></div>
+                    <div class="bg-slate-50 rounded p-2">Delta: <b id="delta-value">--</b></div>
+                    <div class="bg-slate-50 rounded p-2">Gamma: <b id="gamma-value">--</b></div>
+                    <div class="bg-slate-50 rounded p-2">Theta: <b id="theta-value">--</b></div>
+                </div>
+            </div>
+
+            <!-- Option Chain Intelligence Table -->
+            <div class="space-y-2 pt-1">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-[10px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Option Chain Intelligence Table (ATP Crossing & Independent 1m/5m Supertrend)</h3>
+                    <span id="atm-badge" class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">ATM: 23,450 | Exp: 17-Sep-2026</span>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-[550px]">
+                    <table class="w-full text-center border-collapse text-[10px] sm:text-[11px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-bold text-[9px]">
+                                <th class="p-1.5 border-r border-slate-200 bg-emerald-50 text-emerald-900" colspan="4">CALL (CE) Data</th>
+                                <th class="p-1.5 bg-slate-200 text-slate-900 w-20">STRIKE</th>
+                                <th class="p-1.5 border-l border-slate-200 bg-rose-50 text-rose-900" colspan="4">PUT (PE) Data</th>
+                            </tr>
+                            <tr class="bg-slate-50 text-slate-500 border-b border-slate-200 text-[8px]">
+                                <th class="p-1">LTP (+/-)</th>
+                                <th class="p-1 bg-emerald-100/45">ATP</th>
+                                <th class="p-1">1m Entry / TSL</th>
+                                <th class="p-1 border-r border-slate-200">5m Entry / TSL</th>
+                                <th class="p-1 bg-slate-100 font-bold text-slate-800">PRICE</th>
+                                <th class="p-1 border-l border-slate-200">LTP (+/-)</th>
+                                <th class="p-1 bg-rose-100/45">ATP</th>
+                                <th class="p-1">1m Entry / TSL</th>
+                                <th class="p-1">5m Entry / TSL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chain-tbody" class="divide-y divide-slate-100 font-mono text-[9px] sm:text-[10px]">
+                            <!-- Dynamic rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="border border-indigo-200 bg-indigo-50 rounded-xl p-3 text-[9px] text-indigo-900">
+                <b>API connection:</b> Set <code>LIVE_API.endpoint</code> to your secure backend endpoint.
+                The backend should return the documented JSON structure in the integration layer.
+                Broker/API secrets should remain server-side.
+            </div>
+
+            <!-- ZERO TO HERO SCANNER SECTION (Placed at the Very Bottom) -->
+            <div class="border-t border-slate-200 pt-3 space-y-2">
+                <div class="flex justify-between items-center bg-amber-50 border border-amber-200 rounded-lg p-2.5">
+                    <div>
+                        <h4 class="text-xs font-bold text-amber-900 uppercase">⚡ Zero-to-Hero Expiry Scanner</h4>
+                        <p class="text-[9px] text-amber-700">Filtering OTM strikes with low premium (₹2 - ₹15) for high-momentum expiry moves.</p>
+                    </div>
+                    <span id="scanner-expiry-lbl" class="text-[9px] font-mono bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-bold">Exp: 17-Sep-2026</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <!-- Call Side Zero-to-Hero Box -->
+                    <div class="bg-emerald-50/60 border border-emerald-200 rounded-xl p-2.5 space-y-1.5">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-emerald-900 border-b border-emerald-200 pb-1">
+                            <span>🚀 Call Side Zero-to-Hero (CE)</span>
+                            <span class="text-[9px] bg-emerald-200 text-emerald-900 px-1.5 py-0.5 rounded">Target: OTM Strikes</span>
+                        </div>
+                        <div id="zth-call-list" class="space-y-1 font-mono text-[10px]">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Put Side Zero-to-Hero Box -->
+                    <div class="bg-rose-50/60 border border-rose-200 rounded-xl p-2.5 space-y-1.5">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-rose-900 border-b border-rose-200 pb-1">
+                            <span>📉 Put Side Zero-to-Hero (PE)</span>
+                            <span class="text-[9px] bg-rose-200 text-rose-900 px-1.5 py-0.5 rounded">Target: OTM Strikes</span>
+                        </div>
+                        <div id="zth-put-list" class="space-y-1 font-mono text-[10px]">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-[10px] text-slate-500 font-mono">
+            Nifty 50 Engine • Manual Execution Only
+        </p>
+
+    </div>
+
+    <script>
+
+        /* ============================================================
+           LIVE DATA INTEGRATION LAYER
+           ------------------------------------------------------------
+           The existing option-chain / ATP / Supertrend / Zero-to-Hero
+           logic above is retained. This layer only supplies live data.
+
+           API RESPONSE FORMAT EXPECTED FROM YOUR BACKEND:
+           {
+             "index":"NIFTY|BANKNIFTY|SENSEX",
+             "spot":23435.30,
+             "timestamp":"2026-09-14T09:30:00+05:30",
+             "expiries":["2026-09-17","2026-09-24"],
+             "chain":[
+               {
+                 "strike":23450,
+                 "ce":{"ltp":120.5,"change":4.2,"atp":118.4,
+                       "oi":100000,"volume":20000,"iv":13.2},
+                 "pe":{"ltp":110.5,"change":-3.2,"atp":112.1,
+                       "oi":90000,"volume":18000,"iv":14.1}
+               }
+             ],
+             "supertrend":{
+               "1m":{"entry":23337.9,"tsl":23368.2,"direction":"BUY"},
+               "5m":{"entry":23300.0,"tsl":23256.7,"direction":"BUY"}
+             },
+             "flow":{
+               "live1s":{"buyVolume":4321,"sellVolume":5679},
+               "closed1m":{"buyVolume":182,"sellVolume":9818},
+               "closed5m":{"buyVolume":1200,"sellVolume":3400}
+             }
+           }
+
+           IMPORTANT:
+           Keep API credentials on a secure server/backend. Do not put
+           broker secrets directly into a public HTML page.
+        ============================================================ */
+
+        const LIVE_API = {
+    enabled: true,
+    endpoint: "http://127.0.0.1:5000/api/option-chain",
+    apiKey: "",         
+    refreshMs: 5000
+};
+        
+
+        let LIVE_DATA = null;
+        let LIVE_ERROR = "";
+
+        async function fetchLiveData() {
+            if (!LIVE_API.enabled || !LIVE_API.endpoint) return null;
+
+            try {
+                const index = document.getElementById('index-select')?.value || 'NIFTY';
+                const expiry = document.getElementById('expiry-select')?.value || "";
+
+                const url = new URL(LIVE_API.endpoint);
+                url.searchParams.set("index", index);
+                if (expiry) url.searchParams.set("expiry", expiry);
+
+                const headers = {};
+                if (LIVE_API.apiKey) headers["X-API-Key"] = LIVE_API.apiKey;
+
+                const response = await fetch(url.toString(), {
+                    method: "GET",
+                    headers,
+                    cache: "no-store"
+                });
+
+                if (!response.ok) throw new Error("API HTTP " + response.status);
+
+                const data = await response.json();
+                LIVE_DATA = data;
+                LIVE_ERROR = "";
+                return data;
+            } catch (err) {
+                LIVE_ERROR = err.message || "Live API error";
+                LIVE_DATA = null;
+                return null;
+            }
+        }
+
+        function applyLiveData(data) {
+            if (!data) return;
+
+            const selectedIndex = document.getElementById('index-select')?.value || 'NIFTY';
+            if (data.index && data.index !== selectedIndex) return;
+
+            if (typeof data.spot === "number") {
+                const cfg = INDEX_CONFIG[selectedIndex];
+                if (cfg) cfg.spot = data.spot;
+            }
+
+            // Replace the fixed expiry list only when the API supplies it.
+            if (Array.isArray(data.expiries) && data.expiries.length) {
+                const expirySelect = document.getElementById('expiry-select');
+                const oldValue = expirySelect.value;
+                expirySelect.innerHTML = data.expiries.map(e => {
+                    const value = typeof e === "string" ? e : e.value;
+                    const label = typeof e === "string" ? e : (e.label || e.value);
+                    return `<option value="${value}">${label}</option>`;
+                }).join("");
+                if ([...expirySelect.options].some(o => o.value === oldValue)) {
+                    expirySelect.value = oldValue;
+                }
+            }
+
+            updateLiveStatus(true, data.timestamp || new Date().toISOString());
+        }
+
+        function updateLiveStatus(ok, timestamp) {
+            const el = document.getElementById("live-status");
+            if (!el) return;
+            el.innerHTML = ok
+                ? `<span class="text-emerald-700 font-bold">● LIVE</span>
+                   <span class="text-slate-500"> ${timestamp ? new Date(timestamp).toLocaleTimeString('en-IN') : ''}</span>`
+                : `<span class="text-rose-700 font-bold">● API OFFLINE</span>`;
+        }
+
+        function calculateOptionMetrics(chain) {
+            if (!Array.isArray(chain) || !chain.length) {
+                return { pcr: null, maxPain: null, totalCallOI: 0, totalPutOI: 0 };
+            }
+
+            let totalCallOI = 0, totalPutOI = 0;
+            chain.forEach(r => {
+                totalCallOI += Number(r.ce?.oi || 0);
+                totalPutOI += Number(r.pe?.oi || 0);
+            });
+
+            const pcr = totalCallOI ? totalPutOI / totalCallOI : null;
+
+            let bestStrike = null;
+            let bestPain = Infinity;
+
+            chain.forEach(exp => {
+                const s = Number(exp.strike);
+                let pain = 0;
+                chain.forEach(r => {
+                    const k = Number(r.strike);
+                    pain += Math.max(0, s - k) * Number(r.ce?.oi || 0);
+                    pain += Math.max(0, k - s) * Number(r.pe?.oi || 0);
+                });
+                if (pain < bestPain) {
+                    bestPain = pain;
+                    bestStrike = s;
+                }
+            });
+
+            return {
+                pcr,
+                maxPain: bestStrike,
+                totalCallOI,
+                totalPutOI
+            };
+        }
+
+        function renderLiveMetrics(data) {
+            const box = document.getElementById("live-metrics");
+            if (!box) return;
+
+            const m = calculateOptionMetrics(data?.chain || []);
+            box.innerHTML = `
+                <div><span class="text-slate-500">PCR</span><b>${m.pcr == null ? '--' : m.pcr.toFixed(2)}</b></div>
+                <div><span class="text-slate-500">Max Pain</span><b>${m.maxPain == null ? '--' : m.maxPain.toLocaleString('en-IN')}</b></div>
+                <div><span class="text-slate-500">Call OI</span><b>${m.totalCallOI.toLocaleString('en-IN')}</b></div>
+                <div><span class="text-slate-500">Put OI</span><b>${m.totalPutOI.toLocaleString('en-IN')}</b></div>
+            `;
+        }
+
+        /* ============================================================
+           ADDED MULTI-INDEX FLOW LOGIC
+           ------------------------------------------------------------
+           Backend may return either:
+             A) one index object:
+                {
+                  "index":"NIFTY",
+                  "spot":23435.30,
+                  "supertrend":{
+                    "1m":{"entry":23337.9,"tsl":23368.2,"direction":"BUY"},
+                    "5m":{"entry":23300.0,"tsl":23256.7,"direction":"BUY"}
+                  },
+                  "flow":{
+                    "live1s":{"buyVolume":4321,"sellVolume":5679},
+                    "closed1m":{"buyVolume":182,"sellVolume":9818},
+                    "closed5m":{"buyVolume":1200,"sellVolume":3400}
+                  }
+                }
+
+             B) one object containing:
+                "markets": {
+                  "NIFTY": {...},
+                  "BANKNIFTY": {...},
+                  "SENSEX": {...}
+                }
+
+           Exact percentages are calculated as:
+             Buyer % = Buy Volume / (Buy Volume + Sell Volume) * 100
+             Seller % = Sell Volume / (Buy Volume + Sell Volume) * 100
+           If backend already sends buyerPercent/sellerPercent, those are
+           accepted directly. Closed-candle values must represent a FULLY
+           CLOSED 1-minute / 5-minute candle.
+           ============================================================ */
+
+        const MARKET_INDEXES = ["NIFTY", "BANKNIFTY", "SENSEX"];
+
+        const MARKET_LABELS = {
+            NIFTY: "NIFTY 50",
+            BANKNIFTY: "NIFTY BANK",
+            SENSEX: "SENSEX"
+        };
+
+        const MARKET_DEFAULTS = {
+            NIFTY: {
+                spot: 23435.30,
+                supertrend: {
+                    "1m": {entry: null, tsl: null, direction: null},
+                    "5m": {entry: null, tsl: null, direction: null}
+                },
+                flow: {
+                    live1s: {buyer: null, seller: null},
+                    closed1m: {buyer: null, seller: null},
+                    closed5m: {buyer: null, seller: null}
+                }
+            },
+            BANKNIFTY: {
+                spot: null,
+                supertrend: {
+                    "1m": {entry: null, tsl: null, direction: null},
+                    "5m": {entry: null, tsl: null, direction: null}
+                },
+                flow: {
+                    live1s: {buyer: null, seller: null},
+                    closed1m: {buyer: null, seller: null},
+                    closed5m: {buyer: null, seller: null}
+                }
+            },
+            SENSEX: {
+                spot: null,
+                supertrend: {
+                    "1m": {entry: null, tsl: null, direction: null},
+                    "5m": {entry: null, tsl: null, direction: null}
+                },
+                flow: {
+                    live1s: {buyer: null, seller: null},
+                    closed1m: {buyer: null, seller: null},
+                    closed5m: {buyer: null, seller: null}
+                }
+            }
+        };
+
+        const MULTI_INDEX_DATA = JSON.parse(JSON.stringify(MARKET_DEFAULTS));
+
+        function numberOrNull(value) {
+            const n = Number(value);
+            return Number.isFinite(n) ? n : null;
+        }
+
+        function percentPairFromVolumes(flow) {
+            if (!flow || typeof flow !== "object") return null;
+
+            const directBuyer = numberOrNull(
+                flow.buyerPercent ?? flow.buyer_pct ?? flow.buyPercent
+            );
+            const directSeller = numberOrNull(
+                flow.sellerPercent ?? flow.seller_pct ?? flow.sellPercent
+            );
+
+            if (directBuyer != null && directSeller != null) {
+                return {
+                    buyer: Math.max(0, Math.min(100, directBuyer)),
+                    seller: Math.max(0, Math.min(100, directSeller))
+                };
+            }
+
+            const buy = numberOrNull(
+                flow.buyVolume ?? flow.buy_volume ?? flow.buyerVolume ?? flow.buyQty
+            );
+            const sell = numberOrNull(
+                flow.sellVolume ?? flow.sell_volume ?? flow.sellerVolume ?? flow.sellQty
+            );
+
+            if (buy == null || sell == null || buy < 0 || sell < 0) return null;
+
+            const total = buy + sell;
+            if (total <= 0) return null;
+
+            const buyer = (buy / total) * 100;
+            return {
+                buyer,
+                seller: 100 - buyer
+            };
+        }
+
+        function normalizeFlowBlock(source) {
+            if (!source) return {buyer: null, seller: null};
+
+            const pair = percentPairFromVolumes(source);
+            if (pair) return pair;
+
+            return {
+                buyer: numberOrNull(source.buyer ?? source.buyerPercent),
+                seller: numberOrNull(source.seller ?? source.sellerPercent)
+            };
+        }
+
+        function normalizeSupertrendBlock(source) {
+            source = source || {};
+            const directionRaw = source.direction ?? source.signal ?? source.side ?? null;
+            const direction = directionRaw == null
+                ? null
+                : String(directionRaw).toUpperCase();
+
+            return {
+                entry: numberOrNull(source.entry ?? source.entryPrice),
+                tsl: numberOrNull(source.tsl ?? source.tslPrice ?? source.trailingStop),
+                direction
+            };
+        }
+
+        function extractMarketPayload(data, index) {
+            if (!data) return null;
+
+            if (data.markets && data.markets[index]) {
+                return data.markets[index];
+            }
+
+            if (data.data && data.data.markets && data.data.markets[index]) {
+                return data.data.markets[index];
+            }
+
+            if (String(data.index || "").toUpperCase() === index) {
+                return data;
+            }
+
+            if (data.data && String(data.data.index || "").toUpperCase() === index) {
+                return data.data;
+            }
+
+            return null;
+        }
+
+        function normalizeMarketData(raw, index) {
+            if (!raw) return null;
+
+            const st = raw.supertrend || raw.superTrend || {};
+            const flow = raw.flow || raw.volumeFlow || raw.buyerSeller || {};
+
+            // Accept both the preferred names and common backend aliases.
+            const live1s = flow.live1s || flow.live_1s || flow.current1s ||
+                raw.live1s || raw.liveFlow1s || {};
+            const closed1m = flow.closed1m || flow.closed_1m || flow.oneMinuteClosed ||
+                raw.closed1m || raw.oneMinuteClosed || {};
+            const closed5m = flow.closed5m || flow.closed_5m || flow.fiveMinuteClosed ||
+                raw.closed5m || raw.fiveMinuteClosed || {};
+
+            return {
+                spot: numberOrNull(raw.spot ?? raw.ltp ?? raw.price),
+                timestamp: raw.timestamp || raw.time || null,
+                supertrend: {
+                    "1m": normalizeSupertrendBlock(st["1m"] || st["1min"] || raw.supertrend1m || raw.superTrend1m),
+                    "5m": normalizeSupertrendBlock(st["5m"] || st["5min"] || raw.supertrend5m || raw.superTrend5m)
+                },
+                flow: {
+                    live1s: normalizeFlowBlock(live1s),
+                    closed1m: normalizeFlowBlock(closed1m),
+                    closed5m: normalizeFlowBlock(closed5m)
+                }
+            };
+        }
+
+        function fmtPct(value) {
+            return value == null || !Number.isFinite(Number(value))
+                ? "--"
+                : Number(value).toFixed(2) + "%";
+        }
+
+        function fmtPrice(value) {
+            return value == null || !Number.isFinite(Number(value))
+                ? "--"
+                : Number(value).toLocaleString("en-IN", {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 2
+                });
+        }
+
+        function directionBadge(direction) {
+            const d = String(direction || "").toUpperCase();
+            if (d.includes("BUY") || d.includes("BULL")) {
+                return `<span class="text-emerald-700 font-bold">▲ BUY</span>`;
+            }
+            if (d.includes("SELL") || d.includes("BEAR")) {
+                return `<span class="text-rose-700 font-bold">▼ SELL</span>`;
+            }
+            return `<span class="text-slate-400 font-bold">--</span>`;
+        }
+
+        function renderFlowPair(label, pair, labelClass = "text-slate-500") {
+            const buyer = pair?.buyer;
+            const seller = pair?.seller;
+
+            return `
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-2">
+                    <div class="text-[8px] ${labelClass} font-bold uppercase mb-1">${label}</div>
+                    <div class="grid grid-cols-2 gap-2 font-mono">
+                        <div>
+                            <span class="text-[8px] text-slate-400">Buyer %</span>
+                            <div class="text-sm font-black text-emerald-700">${fmtPct(buyer)}</div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[8px] text-slate-400">Seller %</span>
+                            <div class="text-sm font-black text-rose-700">${fmtPct(seller)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMarketCard(index) {
+            const d = MULTI_INDEX_DATA[index] || MARKET_DEFAULTS[index];
+            const st1 = d.supertrend?.["1m"] || {};
+            const st5 = d.supertrend?.["5m"] || {};
+
+            return `
+                <div class="border border-slate-200 rounded-xl p-2.5 bg-white shadow-sm space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
+                        <div>
+                            <div class="text-xs font-black text-slate-900">${MARKET_LABELS[index]}</div>
+                            <div class="text-[8px] text-slate-400 font-mono">
+                                Spot: ${fmtPrice(d.spot)}
+                            </div>
+                        </div>
+                        <span class="text-[8px] font-mono font-bold">${directionBadge(st5.direction)}</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-slate-50 rounded-lg border border-slate-200 p-2">
+                            <div class="flex justify-between text-[8px] font-bold text-slate-400 mb-1">
+                                <span>1-MIN SUPERTREND</span>
+                                <span>${directionBadge(st1.direction)}</span>
+                            </div>
+                            <div class="font-mono text-[9px] leading-relaxed">
+                                Entry: <b class="text-slate-800">${fmtPrice(st1.entry)}</b><br>
+                                TSL: <b class="text-slate-800">${fmtPrice(st1.tsl)}</b>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 rounded-lg border border-slate-200 p-2">
+                            <div class="flex justify-between text-[8px] font-bold text-slate-400 mb-1">
+                                <span>5-MIN SUPERTREND</span>
+                                <span>${directionBadge(st5.direction)}</span>
+                            </div>
+                            <div class="font-mono text-[9px] leading-relaxed">
+                                Entry: <b class="text-slate-800">${fmtPrice(st5.entry)}</b><br>
+                                TSL: <b class="text-slate-800">${fmtPrice(st5.tsl)}</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${renderFlowPair("LIVE 1-SECOND BUYER / SELLER", d.flow?.live1s)}
+                    ${renderFlowPair("1-MIN CLOSED CANDLE BUYER / SELLER", d.flow?.closed1m)}
+                    ${renderFlowPair("5-MIN CLOSED CANDLE BUYER / SELLER", d.flow?.closed5m)}
+                </div>
+            `;
+        }
+
+        function renderAllMarketFlowCards() {
+            const grid = document.getElementById("multi-index-flow-grid");
+            if (!grid) return;
+
+            grid.innerHTML = MARKET_INDEXES.map(renderMarketCard).join("");
+
+            const status = document.getElementById("multi-index-flow-status");
+            if (status) {
+                const hasAny = MARKET_INDEXES.some(index => {
+                    const d = MULTI_INDEX_DATA[index];
+                    return d && (
+                        d.flow?.live1s?.buyer != null ||
+                        d.flow?.closed1m?.buyer != null ||
+                        d.flow?.closed5m?.buyer != null ||
+                        d.supertrend?.["1m"]?.direction ||
+                        d.supertrend?.["5m"]?.direction
+                    );
+                });
+
+                status.innerHTML = hasAny
+                    ? `<span class="text-emerald-700">● LIVE FLOW</span>`
+                    : `<span class="text-slate-500">● WAITING FOR LIVE DATA</span>`;
+            }
+        }
+
+        function applyMultiIndexResponse(data, requestedIndex) {
+            // If the backend sends all three indices in one response.
+            for (const index of MARKET_INDEXES) {
+                const raw = extractMarketPayload(data, index);
+                const normalized = normalizeMarketData(raw, index);
+                if (normalized) {
+                    MULTI_INDEX_DATA[index] = {
+                        ...MULTI_INDEX_DATA[index],
+                        ...normalized,
+                        supertrend: {
+                            ...MULTI_INDEX_DATA[index].supertrend,
+                            ...normalized.supertrend
+                        },
+                        flow: {
+                            ...MULTI_INDEX_DATA[index].flow,
+                            ...normalized.flow
+                        }
+                    };
+                }
+            }
+
+            // If it sends only the requested index.
+            const single = extractMarketPayload(data, requestedIndex);
+            const normalizedSingle = normalizeMarketData(single, requestedIndex);
+            if (normalizedSingle) {
+                MULTI_INDEX_DATA[requestedIndex] = {
+                    ...MULTI_INDEX_DATA[requestedIndex],
+                    ...normalizedSingle,
+                    supertrend: {
+                        ...MULTI_INDEX_DATA[requestedIndex].supertrend,
+                        ...normalizedSingle.supertrend
+                    },
+                    flow: {
+                        ...MULTI_INDEX_DATA[requestedIndex].flow,
+                        ...normalizedSingle.flow
+                    }
+                };
+            }
+
+            renderAllMarketFlowCards();
+        }
+
+        async function fetchOneMarketFlow(index) {
+            if (!LIVE_API.enabled || !LIVE_API.endpoint) return null;
+
+            try {
+                const url = new URL(LIVE_API.endpoint);
+                url.searchParams.set("index", index);
+                url.searchParams.set("flow", "1");
+                url.searchParams.set("supertrend", "1");
+                url.searchParams.set("timeframes", "1m,5m");
+
+                const response = await fetch(url.toString(), {
+                    method: "GET",
+                    headers: LIVE_API.apiKey ? {"X-API-Key": LIVE_API.apiKey} : {},
+                    cache: "no-store"
+                });
+
+                if (!response.ok) throw new Error("API HTTP " + response.status);
+
+                return await response.json();
+            } catch (err) {
+                return null;
+            }
+        }
+
+        async function refreshMultiIndexFlow() {
+            if (!LIVE_API.enabled || !LIVE_API.endpoint) {
+                renderAllMarketFlowCards();
+                return;
+            }
+
+            const results = await Promise.all(
+                MARKET_INDEXES.map(async index => ({
+                    index,
+                    data: await fetchOneMarketFlow(index)
+                }))
+            );
+
+            let gotData = false;
+            for (const item of results) {
+                if (item.data) {
+                    gotData = true;
+                    applyMultiIndexResponse(item.data, item.index);
+                }
+            }
+
+            if (!gotData) renderAllMarketFlowCards();
+        }
+
+
+        async function refreshLiveLayer() {
+            if (!LIVE_API.enabled || !LIVE_API.endpoint) {
+                updateLiveStatus(false);
+                return;
+            }
+
+            const data = await fetchLiveData();
+            if (data) {
+                applyLiveData(data);
+                renderLiveMetrics(data);
+                refreshData();
+            } else {
+                updateLiveStatus(false);
+            }
+        }
+
+        function enableLiveAPI(endpoint, apiKey = "") {
+            LIVE_API.endpoint = endpoint;
+            LIVE_API.apiKey = apiKey;
+            LIVE_API.enabled = !!endpoint;
+            refreshLiveLayer();
+        }
+
+        // Poll the existing live layer as before.
+        setInterval(refreshLiveLayer, LIVE_API.refreshMs);
+
+        // ADDED: exact live 1-second buyer/seller flow + 1m/5m closed-candle flow.
+        setInterval(refreshMultiIndexFlow, 1000);
+
+        function refreshData() {
+            let spot = 23435.30;
+            let step = 50;
+            let atm = Math.round(spot / step) * step;
+            let selectedExpiry = document.getElementById('expiry-select').value;
+
+            document.getElementById('spot-price').innerText = `₹${spot.toLocaleString('en-IN')}`;
+            let shortExp = `${selectedExpiry.split('-').slice(0,2).join('-')}-${selectedExpiry.split('-')[2]}`;
+            document.getElementById('atm-badge').innerText = `ATM: ${atm.toLocaleString('en-IN')} | Exp: ${shortExp}`;
+            document.getElementById('scanner-expiry-lbl').innerText = `Exp: ${shortExp}`;
+
+            let tbody = document.getElementById('chain-tbody');
+            tbody.innerHTML = '';
+
+            let zthCallHtml = '';
+            let zthPutHtml = '';
+
+            for(let i = -7; i <= 7; i++) {
+                let strike = atm + (i * step);
+                let isAtm = (i === 0);
+
+                let callLtp = Number(Math.max(2, 220 - (i * 30)).toFixed(2));
+                let putLtp = Number(Math.max(2, 10 + (i * 30)).toFixed(2));
+                
+                let callChange = Number((-12.9 + (i * 1.5)).toFixed(2));
+                let putChange = Number((10.9 + (i * 1.5)).toFixed(2));
+
+                let callAtp = Number((callLtp + (i % 2 === 0 ? 4.5 : -5.5)).toFixed(2));
+                let putAtp = Number((putLtp + (i % 3 === 0 ? -4.0 : 6.0)).toFixed(2));
+
+                // Zero-to-Hero Scanner logic: Checking OTM strikes with low premium (₹2 to ₹15)
+                if (i > 2 && callLtp >= 2 && callLtp <= 15) {
+                    zthCallHtml += `
+                        <div class="flex justify-between items-center bg-white p-1.5 rounded border border-emerald-100 shadow-xs">
+                            <span class="font-bold text-slate-800">Strike: ${strike} CE</span>
+                            <span class="text-emerald-700 font-bold">LTP: ₹${callLtp}</span>
+                            <span class="text-[8px] text-slate-500">Logic: OTM Momentum</span>
+                        </div>
+                    `;
+                }
+
+                if (i < -2 && putLtp >= 2 && putLtp <= 15) {
+                    zthPutHtml += `
+                        <div class="flex justify-between items-center bg-white p-1.5 rounded border border-rose-100 shadow-xs">
+                            <span class="font-bold text-slate-800">Strike: ${strike} PE</span>
+                            <span class="text-rose-700 font-bold">LTP: ₹${putLtp}</span>
+                            <span class="text-[8px] text-slate-500">Logic: OTM Breakdown</span>
+                        </div>
+                    `;
+                }
+
+                let getLtpCell = (ltp, change) => {
+                    let isPlus = change >= 0;
+                    let colorClass = isPlus ? 'text-emerald-600' : 'text-rose-600';
+                    let sign = isPlus ? '+' : '';
+                    return `
+                        <div class="font-semibold text-slate-900">₹${ltp}</div>
+                        <div class="text-[8px] font-bold ${colorClass}">${sign}${change}</div>
+                    `;
+                };
+
+                let getAtpCrossCell = (atp, ltp) => {
+                    let isCrossedUp = ltp >= atp;
+                    let actionText = isCrossedUp ? 'BUY' : 'SELL';
+                    let arrow = isCrossedUp ? '▲' : '▼';
+                    let badgeBg = isCrossedUp ? 'text-emerald-700 bg-emerald-50' : 'text-rose-700 bg-rose-50';
+                    return `
+                        <div class="font-bold text-slate-800">₹${atp}</div>
+                        <div class="inline-block px-1.5 py-0.5 rounded font-bold text-[8px] ${badgeBg}">
+                            ${actionText} ${arrow}
+                        </div>
+                    `;
+                };
+
+                let getSupertrendEntryCell = (ltp, isCall, is1Min) => {
+                    let seedFactor = isCall ? (i + (is1Min ? 1 : 2)) : (i - (is1Min ? 1 : 2));
+                    let isSupertrendBuy = (seedFactor % 2 === 0);
+                    let arrow = isSupertrendBuy ? '▲' : '▼';
+                    let colorClass = isSupertrendBuy ? 'text-emerald-600' : 'text-rose-600';
+                    
+                    let offset = is1Min ? 5.0 : 8.0;
+                    let entryVal = Number(Math.max(2, ltp - (isSupertrendBuy ? offset : -offset)).toFixed(1));
+                    let tslVal = Number(Math.max(1, entryVal - (isSupertrendBuy ? 4.0 : -4.0)).toFixed(1));
+
+                    return `
+                        <div class="text-[8px] text-slate-600 leading-tight">
+                            Ent: <span class="font-bold text-slate-800">${entryVal}</span><br>
+                            TSL: <span class="font-bold ${colorClass}">${tslVal} ${arrow}</span>
+                        </div>
+                    `;
+                };
+
+                let rowClass = isAtm ? 'bg-amber-100/90 font-bold' : (i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60');
+
+                tbody.innerHTML += `
+                    <tr class="${rowClass} hover:bg-indigo-50/50 transition">
+                        <!-- CALL SIDE -->
+                        <td class="p-2">${getLtpCell(callLtp, callChange)}</td>
+                        <td class="p-2 bg-emerald-50/30">${getAtpCrossCell(callAtp, callLtp)}</td>
+                        <td class="p-2">${getSupertrendEntryCell(callLtp, true, true)}</td>
+                        <td class="p-2 border-r border-slate-200 bg-emerald-50/40">${getSupertrendEntryCell(callLtp, true, false)}</td>
+
+                        <!-- STRIKE -->
+                        <td class="p-2 font-bold text-slate-900 bg-slate-100/80">
+                            <div>${strike.toLocaleString('en-IN')}</div>
+                        </td>
+
+                        <!-- PUT SIDE -->
+                        <td class="p-2 border-l border-slate-200">${getLtpCell(putLtp, putChange)}</td>
+                        <td class="p-2 bg-rose-50/30">${getAtpCrossCell(putAtp, putLtp)}</td>
+                        <td class="p-2">${getSupertrendEntryCell(putLtp, false, true)}</td>
+                        <td class="p-2 bg-rose-50/40">${getSupertrendEntryCell(putLtp, false, false)}</td>
+                    </tr>
+                `;
+            }
+
+            if(zthCallHtml === '') zthCallHtml = '<div class="text-slate-400 text-[9px] p-1">No low-premium OTM call strikes found.</div>';
+            if(zthPutHtml === '') zthPutHtml = '<div class="text-slate-400 text-[9px] p-1">No low-premium OTM put strikes found.</div>';
+
+            document.getElementById('zth-call-list').innerHTML = zthCallHtml;
+            document.getElementById('zth-put-list').innerHTML = zthPutHtml;
+        }
+
+        window.onload = () => {
+            refreshData();
+            updateLiveStatus(false);
+            renderAllMarketFlowCards();
+            refreshLiveLayer();
+            refreshMultiIndexFlow();
+        };
+    </script>
+</body>
+  </html>
+  
