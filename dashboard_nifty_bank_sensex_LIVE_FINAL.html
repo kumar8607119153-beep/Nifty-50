@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Option Intelligence — NIFTY 50 • NIFTY BANK • SENSEX</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-1 sm:p-4">
+    <div class="max-w-full mx-auto space-y-3">
+        
+        <!-- Top Dark Navigation Bar -->
+        <header class="bg-[#1b1b2f] border-b border-slate-800 rounded-t-xl px-4 py-3 flex items-center justify-between shadow-md">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-bold tracking-wider text-indigo-400 uppercase">Option Intelligence Engine</span>
+            </div>
+            <div class="text-right">
+                <p class="text-xs font-semibold text-white">Sanjay Rana</p>
+                <p class="text-[10px] text-slate-400 font-mono">Mob: 8930814389</p>
+            </div>
+        </header>
+
+        <!-- Sub Menu Bar -->
+        <nav class="bg-[#1b1b2f]/80 backdrop-blur px-3 py-2 flex items-center justify-between text-[11px] text-slate-300 border-x border-slate-800">
+            <div class="flex items-center gap-2">
+                <span id="nav-index-name" class="text-indigo-400 font-bold">NIFTY 50 SCALPER</span>
+                <span class="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-800 text-[10px]">Supertrend & Zero-to-Hero Scanner</span>
+            </div>
+            <div class="text-[10px] text-amber-400 font-mono font-bold">
+                Ready for Live Setup
+            </div>
+        </nav>
+
+        <!-- INDEX SELECTOR: EACH INDEX IS COMPLETELY INDEPENDENT -->
+        <div class="bg-[#111827] border border-slate-700 rounded-xl p-2 shadow-md">
+            <div class="grid grid-cols-3 gap-1.5" id="market-index-tabs">
+                <button type="button" data-index="NIFTY" onclick="selectMarketIndex('NIFTY')" class="market-index-btn rounded-lg px-2 py-2 text-[11px] sm:text-xs font-black border border-indigo-500 bg-indigo-600 text-white">NIFTY 50</button>
+                <button type="button" data-index="BANKNIFTY" onclick="selectMarketIndex('BANKNIFTY')" class="market-index-btn rounded-lg px-2 py-2 text-[11px] sm:text-xs font-black border border-slate-600 bg-slate-800 text-slate-300">NIFTY BANK</button>
+                <button type="button" data-index="SENSEX" onclick="selectMarketIndex('SENSEX')" class="market-index-btn rounded-lg px-2 py-2 text-[11px] sm:text-xs font-black border border-slate-600 bg-slate-800 text-slate-300">SENSEX</button>
+            </div>
+        </div>
+
+        <!-- Main Exchange Header Box -->
+        <div class="bg-white text-slate-900 rounded-b-xl p-3 sm:p-4 shadow-xl border border-slate-200 space-y-4">
+            
+            <!-- NSE Brand & Title Row -->
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="flex gap-0.5 items-center">
+                        <div class="w-3 h-4 bg-amber-500 rounded-sm"></div>
+                        <div class="w-3 h-6 bg-indigo-600 rounded-sm"></div>
+                        <div class="w-3 h-5 bg-emerald-500 rounded-sm"></div>
+                    </div>
+                    <span id="selected-index-title" class="text-lg sm:text-xl font-black tracking-tight text-slate-900">NIFTY 50</span>
+                </div>
+                
+                <!-- Expiry Date Selector Dropdown -->
+                <div class="flex items-center gap-2">
+                    <div class="text-right">
+                        <label for="expiry-select" class="block text-[9px] font-bold text-slate-500 uppercase">Select Expiry</label>
+                        <select id="expiry-select" onchange="refreshData()" class="bg-slate-100 border border-slate-300 text-slate-900 text-xs font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                            <option value="">Waiting for live expiries...</option>
+                        </select>
+                    </div>
+                    <button onclick="refreshData()" class="px-2.5 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800 transition shadow mt-3">
+                        🔄
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Spot & Index Supertrend Box -->
+            <div class="space-y-2">
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50">
+                    <span id="spot-label" class="text-[10px] text-slate-400 font-bold uppercase">NIFTY 50 Spot Price</span>
+                    <div id="spot-price" class="text-lg sm:text-xl font-extrabold font-mono text-slate-900 mt-0.5">--</div>
+                    <div id="spot-change" class="text-xs font-semibold text-slate-500 mt-0.5">--</div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-slate-500 font-bold uppercase">Index Supertrend (1m & 5m Overview)</span>
+                        <span class="text-[9px] font-mono font-bold text-indigo-600">Active Setup</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1">
+                                <span>1M ENTRY</span>
+                                <span>1M TSL</span>
+                            </div>
+                            <div class="flex justify-between items-center font-mono">
+                                <span id="index-1m-entry" class="text-xs font-bold text-slate-800">--</span>
+                                <div class="text-right">
+                                    <span id="index-1m-tsl" class="text-xs font-bold text-emerald-600">--</span>
+                                    <span id="index-1m-arrow" class="text-[10px] font-bold">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1">
+                                <span>5M ENTRY</span>
+                                <span>5M TSL</span>
+                            </div>
+                            <div class="flex justify-between items-center font-mono">
+                                <span id="index-5m-entry" class="text-xs font-bold text-slate-800">--</span>
+                                <div class="text-right">
+                                    <span id="index-5m-tsl" class="text-xs font-bold text-emerald-600">--</span>
+                                    <span id="index-5m-arrow" class="text-[10px] font-bold">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUYER / SELLER PERCENTAGE — SELECTED INDEX ONLY -->
+            <div class="border border-slate-200 rounded-xl p-3 bg-white space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold text-slate-600 uppercase">Buyer / Seller Flow — Selected Index</span>
+                    <span id="flow-index-label" class="text-[9px] font-mono font-bold text-indigo-600">NIFTY 50</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] font-mono">
+                    <div class="bg-slate-50 rounded-lg p-2 border border-slate-200">
+                        <div class="text-[9px] font-bold text-slate-500 uppercase">1-Second Live</div>
+                        <div class="flex justify-between mt-1"><span>Buyer %</span><b id="live-buyer-pct">--</b></div>
+                        <div class="flex justify-between"><span>Seller %</span><b id="live-seller-pct">--</b></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-lg p-2 border border-slate-200">
+                        <div class="text-[9px] font-bold text-slate-500 uppercase">1-Min Closed Candle</div>
+                        <div class="flex justify-between mt-1"><span>Buyer %</span><b id="c1-buyer-pct">--</b></div>
+                        <div class="flex justify-between"><span>Seller %</span><b id="c1-seller-pct">--</b></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-lg p-2 border border-slate-200">
+                        <div class="text-[9px] font-bold text-slate-500 uppercase">5-Min Closed Candle</div>
+                        <div class="flex justify-between mt-1"><span>Buyer %</span><b id="c5-buyer-pct">--</b></div>
+                        <div class="flex justify-between"><span>Seller %</span><b id="c5-seller-pct">--</b></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- LIVE API STATUS / OPTION METRICS -->
+            <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold text-slate-600 uppercase">Live Market Data</span>
+                    <span id="live-status" class="text-[9px] font-mono">● API OFFLINE</span>
+                </div>
+                <div id="live-metrics" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono">
+                    <div><span class="text-slate-500">PCR</span><b>--</b></div>
+                    <div><span class="text-slate-500">Max Pain</span><b>--</b></div>
+                    <div><span class="text-slate-500">Call OI</span><b>--</b></div>
+                    <div><span class="text-slate-500">Put OI</span><b>--</b></div>
+                </div>
+            </div>
+
+            <!-- Indicator/analysis placeholders fed by live backend -->
+            <div class="border border-slate-200 rounded-xl p-3 bg-white">
+                <div class="text-[10px] font-bold text-slate-600 uppercase mb-2">
+                    Intelligence: IV • Greeks • PCR • Max Pain • Support/Resistance
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[9px] font-mono">
+                    <div class="bg-slate-50 rounded p-2">IV: <b id="iv-value">--</b></div>
+                    <div class="bg-slate-50 rounded p-2">Delta: <b id="delta-value">--</b></div>
+                    <div class="bg-slate-50 rounded p-2">Gamma: <b id="gamma-value">--</b></div>
+                    <div class="bg-slate-50 rounded p-2">Theta: <b id="theta-value">--</b></div>
+                </div>
+            </div>
+
+            <!-- Option Chain Intelligence Table -->
+            <div class="space-y-2 pt-1">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-[10px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Option Chain Intelligence Table (ATP Crossing & Independent 1m/5m Supertrend)</h3>
+                    <span id="atm-badge" class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">ATM: 23,450 | Exp: 17-Sep-2026</span>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-[550px]">
+                    <table class="w-full text-center border-collapse text-[10px] sm:text-[11px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-bold text-[9px]">
+                                <th class="p-1.5 border-r border-slate-200 bg-emerald-50 text-emerald-900" colspan="4">CALL (CE) Data</th>
+                                <th class="p-1.5 bg-slate-200 text-slate-900 w-20">STRIKE</th>
+                                <th class="p-1.5 border-l border-slate-200 bg-rose-50 text-rose-900" colspan="4">PUT (PE) Data</th>
+                            </tr>
+                            <tr class="bg-slate-50 text-slate-500 border-b border-slate-200 text-[8px]">
+                                <th class="p-1">LTP (+/-)</th>
+                                <th class="p-1 bg-emerald-100/45">ATP</th>
+                                <th class="p-1">1m Entry / TSL</th>
+                                <th class="p-1 border-r border-slate-200">5m Entry / TSL</th>
+                                <th class="p-1 bg-slate-100 font-bold text-slate-800">PRICE</th>
+                                <th class="p-1 border-l border-slate-200">LTP (+/-)</th>
+                                <th class="p-1 bg-rose-100/45">ATP</th>
+                                <th class="p-1">1m Entry / TSL</th>
+                                <th class="p-1">5m Entry / TSL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chain-tbody" class="divide-y divide-slate-100 font-mono text-[9px] sm:text-[10px]">
+                            <!-- Dynamic rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="border border-indigo-200 bg-indigo-50 rounded-xl p-3 text-[9px] text-indigo-900">
+                <b>API connection:</b> Set <code>LIVE_API.endpoint</code> to your secure backend endpoint.
+                The backend should return the documented JSON structure in the integration layer.
+                Broker/API secrets should remain server-side.
+            </div>
+
+            <!-- ZERO TO HERO SCANNER SECTION (Placed at the Very Bottom) -->
+            <div class="border-t border-slate-200 pt-3 space-y-2">
+                <div class="flex justify-between items-center bg-amber-50 border border-amber-200 rounded-lg p-2.5">
+                    <div>
+                        <h4 class="text-xs font-bold text-amber-900 uppercase">⚡ Zero-to-Hero Expiry Scanner</h4>
+                        <p class="text-[9px] text-amber-700">Filtering OTM strikes with low premium (₹2 - ₹15) for high-momentum expiry moves.</p>
+                    </div>
+                    <span id="scanner-expiry-lbl" class="text-[9px] font-mono bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-bold">Exp: 17-Sep-2026</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <!-- Call Side Zero-to-Hero Box -->
+                    <div class="bg-emerald-50/60 border border-emerald-200 rounded-xl p-2.5 space-y-1.5">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-emerald-900 border-b border-emerald-200 pb-1">
+                            <span>🚀 Call Side Zero-to-Hero (CE)</span>
+                            <span class="text-[9px] bg-emerald-200 text-emerald-900 px-1.5 py-0.5 rounded">Target: OTM Strikes</span>
+                        </div>
+                        <div id="zth-call-list" class="space-y-1 font-mono text-[10px]">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Put Side Zero-to-Hero Box -->
+                    <div class="bg-rose-50/60 border border-rose-200 rounded-xl p-2.5 space-y-1.5">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-rose-900 border-b border-rose-200 pb-1">
+                            <span>📉 Put Side Zero-to-Hero (PE)</span>
+                            <span class="text-[9px] bg-rose-200 text-rose-900 px-1.5 py-0.5 rounded">Target: OTM Strikes</span>
+                        </div>
+                        <div id="zth-put-list" class="space-y-1 font-mono text-[10px]">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-[10px] text-slate-500 font-mono">
+            Nifty 50 Engine • Manual Execution Only
+        </p>
+
+    </div>
+
+    <script>
+/* ============================================================
+   LIVE DATA ENGINE
+   ------------------------------------------------------------
+   NO DUMMY MARKET/OPTION PRICES.
+   The page renders only values received from LIVE_API.
+
+   Expected backend response for the selected index:
+   {
+     "index":"NIFTY|BANKNIFTY|SENSEX",
+     "spot":23435.30,
+     "change":-79.70,
+     "changePct":-0.34,
+     "timestamp":"2026-09-14T09:30:00+05:30",
+     "expiries":[{"value":"2026-09-17","label":"17 Sep 2026"}],
+     "flow":{
+       "live":{"buyVolume":120,"sellVolume":80},
+       "1m":{"buyVolume":600,"sellVolume":400,"closed":true},
+       "5m":{"buyVolume":3000,"sellVolume":2000,"closed":true}
+     },
+     "candles_1m":[
+       {"timestamp":"...","open":100,"high":105,"low":99,"close":104,"closed":true}
+     ],
+     "candles_5m":[...],
+     "chain":[
+       {
+         "strike":23450,
+         "ce":{
+           "symbol":"NIFTY26SEP23450CE",
+           "ltp":120.5,"change":4.2,"atp":118.4,
+           "oi":100000,"volume":20000,"iv":13.2,
+           "candles_1m":[...],"candles_5m":[...]
+         },
+         "pe":{...}
+       }
+     ]
+   }
+
+   Candle format can optionally contain buyVolume/sellVolume.
+   Supertrend: ATR 10, multiplier 3.0, source HL2.
+   Signals are based only on CLOSED candles.
+============================================================ */
+
+const LIVE_API = {
+    enabled: true,
+    endpoint: "http://127.0.0.1:5000/api/option-chain",
+    apiKey: "",
+    refreshMs: 1000
+};
+
+let LIVE_DATA = null;
+let LIVE_ERROR = "";
+let currentIndex = "NIFTY";
+
+const INDEX_CONFIG = {
+    NIFTY: { label:"NIFTY 50" },
+    BANKNIFTY: { label:"NIFTY BANK" },
+    SENSEX: { label:"SENSEX" }
+};
+
+function money(v) {
+    const n = Number(v);
+    return Number.isFinite(n) ? `₹${n.toLocaleString('en-IN',{maximumFractionDigits:2})}` : "--";
+}
+function num(v, digits=2) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n.toFixed(digits) : "--";
+}
+function escapeHtml(v) {
+    return String(v ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+}
+function pctFromVolumes(buy, sell) {
+    buy = Number(buy || 0); sell = Number(sell || 0);
+    const total = buy + sell;
+    if (total <= 0) return {buy:null, sell:null};
+    return {buy:(buy/total)*100, sell:(sell/total)*100};
+}
+function formatPct(v) {
+    return Number.isFinite(Number(v)) ? `${Number(v).toFixed(2)}%` : "--";
+}
+function setPct(prefix, pair) {
+    document.getElementById(prefix+"-buyer-pct").innerText = formatPct(pair.buy);
+    document.getElementById(prefix+"-seller-pct").innerText = formatPct(pair.sell);
+}
+
+/* ---------- Supertrend: ATR(10), Multiplier 3, HL2 ---------- */
+function closedCandles(candles) {
+    if (!Array.isArray(candles)) return [];
+    return candles.filter(c => c && (c.closed === true || c.isClosed === true));
+}
+function trueRange(c, prevClose) {
+    const h=Number(c.high), l=Number(c.low);
+    if (!Number.isFinite(h) || !Number.isFinite(l)) return null;
+    if (!Number.isFinite(prevClose)) return h-l;
+    return Math.max(h-l, Math.abs(h-prevClose), Math.abs(l-prevClose));
+}
+function calcATR(candles, period=10) {
+    const tr = [];
+    for (let i=0;i<candles.length;i++) {
+        const pc = i ? Number(candles[i-1].close) : NaN;
+        const x = trueRange(candles[i], pc);
+        if (x != null) tr.push(x);
+    }
+    if (tr.length < period) return null;
+    let atr = tr.slice(0,period).reduce((a,b)=>a+b,0)/period;
+    for (let i=period;i<tr.length;i++) atr=((atr*(period-1))+tr[i])/period;
+    return atr;
+}
+function supertrend(candles, period=10, multiplier=3) {
+    const c = closedCandles(candles);
+    if (c.length < period + 1) return null;
+    const trs=[];
+    for(let i=0;i<c.length;i++){
+        const pc=i?Number(c[i-1].close):NaN;
+        const x=trueRange(c[i],pc);
+        if(x==null) return null;
+        trs.push(x);
+    }
+    const atrs=new Array(c.length).fill(null);
+    let atr=trs.slice(0,period).reduce((a,b)=>a+b,0)/period;
+    atrs[period-1]=atr;
+    for(let i=period;i<c.length;i++){
+        atr=((atr*(period-1))+trs[i])/period;
+        atrs[i]=atr;
+    }
+    const finalUpper=new Array(c.length).fill(null);
+    const finalLower=new Array(c.length).fill(null);
+    const st=new Array(c.length).fill(null);
+    const dir=new Array(c.length).fill(null);
+
+    for(let i=period-1;i<c.length;i++){
+        const hl2=(Number(c[i].high)+Number(c[i].low))/2;
+        const basicU=hl2+multiplier*atrs[i];
+        const basicL=hl2-multiplier*atrs[i];
+        if(i===period-1){
+            finalUpper[i]=basicU; finalLower[i]=basicL;
+            const close=Number(c[i].close);
+            st[i]=close<=finalUpper[i] ? finalUpper[i] : finalLower[i];
+            dir[i]=close<=finalUpper[i] ? "SELL" : "BUY";
+            continue;
+        }
+        const prevClose=Number(c[i-1].close);
+        finalUpper[i]=(basicU<finalUpper[i-1] || prevClose>finalUpper[i-1]) ? basicU : finalUpper[i-1];
+        finalLower[i]=(basicL>finalLower[i-1] || prevClose<finalLower[i-1]) ? basicL : finalLower[i-1];
+
+        if(st[i-1]===finalUpper[i-1]){
+            if(Number(c[i].close)<=finalUpper[i]) { st[i]=finalUpper[i]; dir[i]="SELL"; }
+            else { st[i]=finalLower[i]; dir[i]="BUY"; }
+        } else {
+            if(Number(c[i].close)>=finalLower[i]) { st[i]=finalLower[i]; dir[i]="BUY"; }
+            else { st[i]=finalUpper[i]; dir[i]="SELL"; }
+        }
+    }
+    const i=c.length-1;
+    return {
+        direction:dir[i],
+        value:st[i],
+        close:Number(c[i].close),
+        timestamp:c[i].timestamp || c[i].time || null,
+        previousDirection: dir[i-1] || null
+    };
+}
+function renderST(prefix, result) {
+    const entry=document.getElementById(prefix+"-entry");
+    const tsl=document.getElementById(prefix+"-tsl");
+    const arrow=document.getElementById(prefix+"-arrow");
+    if(!entry || !tsl || !arrow) return;
+    if(!result){
+        entry.innerText="--"; tsl.innerText="--"; arrow.innerText="--";
+        arrow.className="text-[10px] font-bold text-slate-400";
+        tsl.className="text-xs font-bold text-slate-500";
+        return;
+    }
+    entry.innerText=money(result.close);
+    tsl.innerText=money(result.value);
+    const buy=result.direction==="BUY";
+    arrow.innerText=buy?"▲":"▼";
+    arrow.className=`text-[10px] font-bold ${buy?"text-emerald-600":"text-rose-600"}`;
+    tsl.className=`text-xs font-bold ${buy?"text-emerald-600":"text-rose-600"}`;
+}
+
+/* ---------- Index selection ---------- */
+function selectMarketIndex(index){
+    if(!INDEX_CONFIG[index]) return;
+    currentIndex=index;
+    LIVE_DATA=null;
+
+    document.querySelectorAll(".market-index-btn").forEach(btn=>{
+        const active=btn.dataset.index===currentIndex;
+        btn.className=`market-index-btn rounded-lg px-2 py-2 text-[11px] sm:text-xs font-black border ${active?"border-indigo-500 bg-indigo-600 text-white":"border-slate-600 bg-slate-800 text-slate-300"}`;
+    });
+
+    const cfg=INDEX_CONFIG[currentIndex];
+    document.getElementById("selected-index-title").innerText=cfg.label;
+    document.getElementById("nav-index-name").innerText=cfg.label+" SCALPER";
+    document.getElementById("spot-label").innerText=cfg.label+" Spot Price";
+    document.getElementById("flow-index-label").innerText=cfg.label;
+    clearDynamicData();
+    refreshLiveLayer();
+}
+
+function onIndexChange(){
+    const sel=document.getElementById("index-select");
+    if(sel) selectMarketIndex(sel.value);
+}
+
+function clearDynamicData(){
+    ["spot-price","index-1m-entry","index-1m-tsl","index-1m-arrow",
+     "index-5m-entry","index-5m-tsl","index-5m-arrow",
+     "live-buyer-pct","live-seller-pct","c1-buyer-pct","c1-seller-pct",
+     "c5-buyer-pct","c5-seller-pct"].forEach(id=>{
+        const e=document.getElementById(id); if(e) e.innerText="--";
+    });
+    document.getElementById("chain-tbody").innerHTML="";
+    document.getElementById("zth-call-list").innerHTML='<div class="text-slate-400 text-[9px] p-1">Waiting for live data...</div>';
+    document.getElementById("zth-put-list").innerHTML='<div class="text-slate-400 text-[9px] p-1">Waiting for live data...</div>';
+}
+
+/* ---------- Live API ---------- */
+async function fetchLiveData(){
+    if(!LIVE_API.enabled || !LIVE_API.endpoint) return null;
+    try{
+        const expiry=document.getElementById("expiry-select")?.value || "";
+        const url=new URL(LIVE_API.endpoint, window.location.href);
+        url.searchParams.set("index",currentIndex);
+        if(expiry) url.searchParams.set("expiry",expiry);
+        const headers={};
+        if(LIVE_API.apiKey) headers["X-API-Key"]=LIVE_API.apiKey;
+        const response=await fetch(url.toString(),{method:"GET",headers,cache:"no-store"});
+        if(!response.ok) throw new Error("API HTTP "+response.status);
+        const data=await response.json();
+        if(data.index && data.index!==currentIndex) return null;
+        LIVE_ERROR="";
+        LIVE_DATA=data;
+        return data;
+    }catch(err){
+        LIVE_ERROR=err.message || "Live API error";
+        LIVE_DATA=null;
+        return null;
+    }
+}
+function updateLiveStatus(ok,timestamp){
+    const el=document.getElementById("live-status");
+    if(!el) return;
+    el.innerHTML=ok
+      ? `<span class="text-emerald-700 font-bold">● LIVE</span><span class="text-slate-500"> ${timestamp?new Date(timestamp).toLocaleTimeString('en-IN'):''}</span>`
+      : `<span class="text-rose-700 font-bold">● API OFFLINE</span>`;
+}
+function applyLiveData(data){
+    if(!data) return;
+    const cfg=INDEX_CONFIG[currentIndex];
+    document.getElementById("selected-index-title").innerText=cfg.label;
+    document.getElementById("nav-index-name").innerText=cfg.label+" SCALPER";
+    document.getElementById("spot-label").innerText=cfg.label+" Spot Price";
+
+    if(Number.isFinite(Number(data.spot))){
+        document.getElementById("spot-price").innerText=money(data.spot);
+    }
+    if(Number.isFinite(Number(data.change))){
+        const cp=Number(data.changePct);
+        const sign=Number(data.change)>=0?"+":"";
+        document.getElementById("spot-change").innerText=`${Number(data.change)>=0?"▲":"▼"} ${sign}${num(data.change)}${Number.isFinite(cp)?` (${sign}${num(cp)}%)`:""}`;
+        document.getElementById("spot-change").className=`text-xs font-semibold mt-0.5 ${Number(data.change)>=0?"text-emerald-600":"text-rose-600"}`;
+    }
+
+    const expirySelect=document.getElementById("expiry-select");
+    if(Array.isArray(data.expiries) && data.expiries.length){
+        const old=expirySelect.value;
+        expirySelect.innerHTML=data.expiries.map(e=>{
+            const value=typeof e==="string"?e:e.value;
+            const label=typeof e==="string"?e:(e.label||e.value);
+            return `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`;
+        }).join("");
+        if([...expirySelect.options].some(o=>o.value===old)) expirySelect.value=old;
+    }
+
+    const f=data.flow||{};
+    const live=f.live||data.liveFlow||{};
+    const one=f["1m"]||f.oneMinute||data.candle1mFlow||{};
+    const five=f["5m"]||f.fiveMinute||data.candle5mFlow||{};
+    setPct("live", live.buyerPct!=null?{buy:live.buyerPct,sell:live.sellerPct}:{buy:live.buyPct,sell:live.sellPct});
+    if(live.buyerPct==null && live.sellerPct==null) setPct("live",pctFromVolumes(live.buyVolume,live.sellVolume));
+    setPct("c1", one.buyerPct!=null?{buy:one.buyerPct,sell:one.sellerPct}:pctFromVolumes(one.buyVolume,one.sellVolume));
+    setPct("c5", five.buyerPct!=null?{buy:five.buyerPct,sell:five.sellerPct}:pctFromVolumes(five.buyVolume,five.sellVolume));
+
+    const st1=supertrend(data.candles_1m || data.indexCandles1m || []);
+    const st5=supertrend(data.candles_5m || data.indexCandles5m || []);
+    renderST("index-1m",st1);
+    renderST("index-5m",st5);
+
+    updateLiveStatus(true,data.timestamp);
+    renderLiveMetrics(data);
+    refreshData();
+}
+function renderLiveMetrics(data){
+    const box=document.getElementById("live-metrics");
+    if(!box) return;
+    const m=calculateOptionMetrics(data?.chain||[]);
+    box.innerHTML=`
+      <div><span class="text-slate-500">PCR</span><b>${m.pcr==null?"--":m.pcr.toFixed(2)}</b></div>
+      <div><span class="text-slate-500">Max Pain</span><b>${m.maxPain==null?"--":m.maxPain.toLocaleString('en-IN')}</b></div>
+      <div><span class="text-slate-500">Call OI</span><b>${m.totalCallOI.toLocaleString('en-IN')}</b></div>
+      <div><span class="text-slate-500">Put OI</span><b>${m.totalPutOI.toLocaleString('en-IN')}</b></div>`;
+}
+function calculateOptionMetrics(chain){
+    if(!Array.isArray(chain)||!chain.length) return {pcr:null,maxPain:null,totalCallOI:0,totalPutOI:0};
+    let totalCallOI=0,totalPutOI=0;
+    chain.forEach(r=>{totalCallOI+=Number(r.ce?.oi||0);totalPutOI+=Number(r.pe?.oi||0);});
+    const pcr=totalCallOI?totalPutOI/totalCallOI:null;
+    let bestStrike=null,bestPain=Infinity;
+    chain.forEach(x=>{
+        const s=Number(x.strike); let pain=0;
+        chain.forEach(r=>{
+            const k=Number(r.strike);
+            pain+=Math.max(0,s-k)*Number(r.ce?.oi||0);
+            pain+=Math.max(0,k-s)*Number(r.pe?.oi||0);
+        });
+        if(pain<bestPain){bestPain=pain;bestStrike=s;}
+    });
+    return {pcr,maxPain:bestStrike,totalCallOI,totalPutOI};
+}
+
+/* ---------- Option chain: live prices only; existing display logic preserved ---------- */
+function optionSTCell(opt){
+    const c1=supertrend(opt?.candles_1m || opt?.candles1m || []);
+    const c5=supertrend(opt?.candles_5m || opt?.candles5m || []);
+    return {c1,c5};
+}
+function stCellHTML(result){
+    if(!result) return `<div class="text-[8px] text-slate-400">Ent: --<br>TSL: -- <span>--</span></div>`;
+    const buy=result.direction==="BUY";
+    return `<div class="text-[8px] text-slate-600 leading-tight">
+      Ent: <span class="font-bold text-slate-800">${money(result.close)}</span><br>
+      TSL: <span class="font-bold ${buy?"text-emerald-600":"text-rose-600"}">${money(result.value)} ${buy?"▲":"▼"}</span>
+    </div>`;
+}
+function ltpCell(opt){
+    if(!opt || !Number.isFinite(Number(opt.ltp))) return `<div class="font-semibold text-slate-400">--</div><div class="text-[8px] font-bold text-slate-400">--</div>`;
+    const change=Number(opt.change);
+    const color=Number.isFinite(change)?(change>=0?"text-emerald-600":"text-rose-600"):"text-slate-400";
+    const sign=Number.isFinite(change)&&change>=0?"+":"";
+    return `<div class="font-semibold text-slate-900">${money(opt.ltp)}</div><div class="text-[8px] font-bold ${color}">${Number.isFinite(change)?sign+num(change):"--"}</div>`;
+}
+function atpCell(opt){
+    if(!opt || !Number.isFinite(Number(opt.atp))) return `<div class="font-bold text-slate-400">--</div><div class="inline-block px-1.5 py-0.5 rounded font-bold text-[8px] text-slate-500 bg-slate-50">--</div>`;
+    const crossed=Number(opt.ltp)>=Number(opt.atp);
+    return `<div class="font-bold text-slate-800">${money(opt.atp)}</div>
+      <div class="inline-block px-1.5 py-0.5 rounded font-bold text-[8px] ${crossed?"text-emerald-700 bg-emerald-50":"text-rose-700 bg-rose-50"}">${crossed?"BUY ▲":"SELL ▼"}</div>`;
+}
+function refreshData(){
+    const data=LIVE_DATA;
+    if(!data || data.index && data.index!==currentIndex) return;
+    const chain=Array.isArray(data.chain)?data.chain:[];
+    const tbody=document.getElementById("chain-tbody");
+    tbody.innerHTML="";
+    const zthCalls=[];
+    const zthPuts=[];
+
+    chain.forEach((r,idx)=>{
+        const strike=Number(r.strike);
+        if(!Number.isFinite(strike)) return;
+        const ce=r.ce||{}, pe=r.pe||{};
+        const ceST=optionSTCell(ce), peST=optionSTCell(pe);
+        const isAtm = data.atm!=null ? Number(data.atm)===strike : false;
+        const rowClass=isAtm?"bg-amber-100/90 font-bold":(idx%2===0?"bg-white":"bg-slate-50/60");
+
+        // Zero-to-Hero: selected index ONLY, live LTP ONLY.
+        if(strike>Number(data.spot||0) && Number(ce.ltp)>=2 && Number(ce.ltp)<=15){
+            zthCalls.push({strike, ltp:Number(ce.ltp), volume:Number(ce.volume||0), oi:Number(ce.oi||0), iv:Number(ce.iv||0)});
+        }
+        if(strike<Number(data.spot||0) && Number(pe.ltp)>=2 && Number(pe.ltp)<=15){
+            zthPuts.push({strike, ltp:Number(pe.ltp), volume:Number(pe.volume||0), oi:Number(pe.oi||0), iv:Number(pe.iv||0)});
+        }
+
+        tbody.innerHTML+=`<tr class="${rowClass} hover:bg-indigo-50/50 transition">
+          <td class="p-2">${ltpCell(ce)}</td>
+          <td class="p-2 bg-emerald-50/30">${atpCell(ce)}</td>
+          <td class="p-2">${stCellHTML(ceST.c1)}</td>
+          <td class="p-2 border-r border-slate-200 bg-emerald-50/40">${stCellHTML(ceST.c5)}</td>
+          <td class="p-2 font-bold text-slate-900 bg-slate-100/80"><div>${strike.toLocaleString('en-IN')}</div></td>
+          <td class="p-2 border-l border-slate-200">${ltpCell(pe)}</td>
+          <td class="p-2 bg-rose-50/30">${atpCell(pe)}</td>
+          <td class="p-2">${stCellHTML(peST.c1)}</td>
+          <td class="p-2 bg-rose-50/40">${stCellHTML(peST.c5)}</td>
+        </tr>`;
+    });
+    // Rank live candidates and show up to 5 CE + 5 PE for the selected index.
+    // If fewer than 5 valid live contracts exist, show only the real contracts.
+    const rankZTH=(a,b)=>((b.volume+b.oi*0.001)-(a.volume+a.oi*0.001)) || (a.ltp-b.ltp);
+    zthCalls.sort(rankZTH);
+    zthPuts.sort(rankZTH);
+    const zthCallHtml=zthCalls.slice(0,5).map(x=>`<div class="flex justify-between items-center bg-white p-1.5 rounded border border-emerald-100 shadow-xs">
+      <span class="font-bold text-slate-800">Strike: ${x.strike.toLocaleString('en-IN')} CE</span>
+      <span class="text-emerald-700 font-bold">LTP: ${money(x.ltp)}</span>
+      <span class="text-[8px] text-slate-500">Live OTM • Vol ${x.volume.toLocaleString('en-IN')}</span></div>`).join('');
+    const zthPutHtml=zthPuts.slice(0,5).map(x=>`<div class="flex justify-between items-center bg-white p-1.5 rounded border border-rose-100 shadow-xs">
+      <span class="font-bold text-slate-800">Strike: ${x.strike.toLocaleString('en-IN')} PE</span>
+      <span class="text-rose-700 font-bold">LTP: ${money(x.ltp)}</span>
+      <span class="text-[8px] text-slate-500">Live OTM • Vol ${x.volume.toLocaleString('en-IN')}</span></div>`).join('');
+    document.getElementById("zth-call-list").innerHTML=zthCallHtml||'<div class="text-slate-400 text-[9px] p-1">No live low-premium OTM call strikes found for '+escapeHtml(INDEX_CONFIG[currentIndex].label)+'.</div>';
+    document.getElementById("zth-put-list").innerHTML=zthPutHtml||'<div class="text-slate-400 text-[9px] p-1">No live low-premium OTM put strikes found for '+escapeHtml(INDEX_CONFIG[currentIndex].label)+'.</div>';
+
+    const atm=data.atm!=null?Number(data.atm):(data.spot!=null?Number(data.spot):null);
+    const expiry=document.getElementById("expiry-select").value||"--";
+    document.getElementById("atm-badge").innerText=`ATM: ${atm==null?"--":atm.toLocaleString('en-IN')} | Exp: ${expiry}`;
+    document.getElementById("scanner-expiry-lbl").innerText=`Exp: ${expiry}`;
+}
+async function refreshLiveLayer(){
+    const data=await fetchLiveData();
+    if(data){ applyLiveData(data); }
+    else { updateLiveStatus(false); }
+}
+function enableLiveAPI(endpoint,apiKey=""){
+    LIVE_API.endpoint=endpoint;
+    LIVE_API.apiKey=apiKey;
+    LIVE_API.enabled=!!endpoint;
+    refreshLiveLayer();
+}
+setInterval(refreshLiveLayer,LIVE_API.refreshMs);
+
+window.onload=()=>{
+    selectMarketIndex("NIFTY");
+};
+</script>
+</body>
+  </html>
+  
